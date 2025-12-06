@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 import csv
 from .models import Account, Transaction
-from .forms import LoginForm, DepositForm, WithdrawForm
+from .forms import LoginForm, DepositForm, WithdrawForm, RegistrationForm
 
 def index(request):
     context = {
@@ -27,6 +27,29 @@ def contact_view(request):
         'is_home_page': False
     }
     return render(request, 'contact.html', context)
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            account = form.save(commit=False)
+            account.balance = 0  # Set initial balance to 0
+            account.save()
+            return redirect('registration_success')
+    else:
+        form = RegistrationForm()
+    
+    context = {
+        'form': form,
+        'is_home_page': False
+    }
+    return render(request, 'register.html', context)
+
+def registration_success_view(request):
+    context = {
+        'is_home_page': False
+    }
+    return render(request, 'registration_success.html', context)
 
 def login_view(request):
     error = None

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+    <div class="card-header">
+        <h3><i class="fas fa-user-plus"></i> Create New Account</h3>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.acc_number.id_for_label }}">Account Number</label>
+            {{ form.acc_number }}
+            {% if form.acc_number.errors %}
+                <div class="alert alert-error">
+                    {{ form.acc_number.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">Full Name</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="alert alert-error">
+                    {{ form.name.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.pin.id_for_label }}">PIN</label>
+            {{ form.pin }}
+            {% if form.pin.errors %}
+                <div class="alert alert-error">
+                    {{ form.pin.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.confirm_pin.id_for_label }}">Confirm PIN</label>
+            {{ form.confirm_pin }}
+            {% if form.confirm_pin.errors %}
+                <div class="alert alert-error">
+                    {{ form.confirm_pin.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn">Create Account</button>
+        <a href="{% url 'login' %}" class="btn btn-secondary" style="margin-left: 10px;">Already have an account?</a>
+    </form>
+</div>
+{% endblock %}
