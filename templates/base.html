@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Secure Bank - Your Financial Partner</title>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><i class="fas fa-university"></i> SecureBank</h1>
+                    <p>Your Trusted Financial Partner</p>
+                </div>
+                <div class="header-contact">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+91 93538 61156</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>support@securebank.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/services/">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact Us</a>
+                    </li>
+                    <!-- Login/Logout button in navbar (only for about, services, contact) -->
+                    {% if not is_home_page %}
+                        {% if request.session.acc_number %}
+                            <li class="nav-item nav-button">
+                                <a class="nav-link btn-nav" href="{% url 'logout' %}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item nav-button">
+                                <a class="nav-link btn-nav" href="{% url 'login' %}">Login</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero section only for home page -->
+    {% if is_home_page %}
+    <section class="hero"> 
+        <div class="container">
+            <div class="hero-content">
+                <h2>Empowering Your Financial Future</h2>
+                <p>We provide safe, smart, and simple banking solutions that help you grow your wealth with confidence.</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'login' %}" class="btn">Access ATM</a>
+                    <a href="/services/" class="btn btn-secondary">Our Services</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    <main class="container">
+        {%block content%}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-section about">
+                    <h2>Secure Bank</h2>
+                    <p>
+                        Empowering your financial future with safe, smart, and simple banking solutions that help you grow your wealth with confidence.
+                    </p>
+                    <div class="social-icons">
+                        <a href="https://www.linkedin.com/in/manjunath-nl-542bb4232" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/manjunath_nl_" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        
+                    </div>
+                </div>
+
+                <div class="footer-section links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/services/">Services</a></li>
+                        <li><a href="{% url 'login' %}">ATM Access</a></li>
+                        <li><a href="/contact/">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Namma Hassan, Karnataka, India</p>
+                    <p><i class="fas fa-phone"></i> +91 93538 61156</p>
+                    <p><i class="fas fa-envelope"></i> support@securebank.com</p>
+                </div>
+
+                <div class="footer-section newsletter">
+                    <h3>Subscribe</h3>
+                    <form>
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Secure Bank. All rights reserved | Designed by Manjunath N L for secure banking</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

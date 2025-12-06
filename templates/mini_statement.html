@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-receipt"></i> Mini Statement</h3>
+        <p>Last 5 Transactions</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Date & Time</th>
+                <th>Action</th>
+                <th>Amount (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t in transactions %}
+            <tr>
+                <td>{{ t.timestamp|date:"d M Y, H:i" }}</td>
+                <td>
+                    {% if t.action == "Deposit" %}
+                        <span style="color: #4CAF50;">{{ t.action }}</span>
+                    {% else %}
+                        <span style="color: #f44336;">{{ t.action }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if t.action == "Deposit" %}
+                        +{{ t.amount }}
+                    {% else %}
+                        -{{ t.amount }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center;">No transactions found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="display: flex; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 10px;">
+        <a href="{% url 'dashboard' %}" class="btn">Back to Dashboard</a>
+        <a href="?export=true" class="btn btn-secondary" target="_blank">
+            <i class="fas fa-download"></i> Export as CSV
+        </a>
+    </div>
+</div>
+{% endblock %}

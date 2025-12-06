@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Account Dashboard</h3>
+    </div>
+    
+    <div class="dashboard-info">
+        <div class="info-card">
+            <h4>Welcome</h4>
+            <div class="value">{{ account.name }}</div>
+            <p>Account Holder</p>
+        </div>
+        
+        <div class="info-card">
+            <h4>Account Number</h4>
+            <div class="value">{{ account.acc_number }}</div>
+            <p>Your Account</p>
+        </div>
+        
+        <div class="info-card">
+            <h4>Available Balance</h4>
+            <div class="value">₹{{ account.balance }}</div>
+            <p>Current Balance</p>
+        </div>
+    </div>
+    
+    <h4>Banking Operations</h4>
+    <div class="operations">
+        <div class="operation-card">
+            <i class="fas fa-arrow-down"></i>
+            <h5>Deposit</h5>
+            <p>Add money to your account</p>
+            <a href="{% url 'deposit' %}" class="btn">Deposit</a>
+        </div>
+        
+        <div class="operation-card">
+            <i class="fas fa-arrow-up"></i>
+            <h5>Withdraw</h5>
+            <p>Withdraw money from your account</p>
+            <a href="{% url 'withdraw' %}" class="btn btn-secondary">Withdraw</a>
+        </div>
+        
+        <div class="operation-card">
+            <i class="fas fa-receipt"></i>
+            <h5>Mini Statement</h5>
+            <p>View recent transactions</p>
+            <a href="{% url 'mini_statement' %}" class="btn btn-secondary">View Statement</a>
+        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+{% endblock %}

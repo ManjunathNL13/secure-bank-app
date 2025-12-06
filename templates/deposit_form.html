@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+    <div class="card-header">
+        <h3>Deposit Money</h3>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.amount.id_for_label }}">Amount (₹)</label>
+            {{ form.amount }}
+        </div>
+        
+        <button type="submit" class="btn">Deposit Funds</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary" style="margin-left: 10px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}
