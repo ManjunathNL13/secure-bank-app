@@ -27,6 +27,7 @@
     
     <h4>Banking Operations</h4>
     <div class="operations">
+        
         <div class="operation-card">
             <i class="fas fa-arrow-down"></i>
             <h5>Deposit</h5>
@@ -46,6 +47,13 @@
             <h5>Mini Statement</h5>
             <p>View recent transactions</p>
             <a href="{% url 'mini_statement' %}" class="btn btn-secondary">View Statement</a>
+        </div>
+        
+        <div class="operation-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h5>Monthly Dashboard</h5>
+            <p>View monthly summary</p>
+            <a href="{% url 'monthly_dashboard' %}" class="btn btn-secondary">Monthly View</a>
         </div>
     </div>
     

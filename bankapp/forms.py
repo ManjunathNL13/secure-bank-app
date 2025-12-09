@@ -28,6 +28,11 @@ class WithdrawForm(forms.Form):
         decimal_places=2,
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter amount', 'min': '0', 'step': '0.01'})
     )
+    pin = forms.CharField(
+        label="Confirm PIN", 
+        max_length=10, 
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter your PIN'})
+    )
 
 class RegistrationForm(forms.ModelForm):
     confirm_pin = forms.CharField(

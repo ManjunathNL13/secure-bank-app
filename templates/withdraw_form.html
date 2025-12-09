@@ -11,6 +11,21 @@
         <div class="form-group">
             <label for="{{ form.amount.id_for_label }}">Amount (₹)</label>
             {{ form.amount }}
+            {% if form.amount.errors %}
+                <div class="alert alert-error">
+                    {{ form.amount.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.pin.id_for_label }}">Confirm PIN</label>
+            {{ form.pin }}
+            {% if form.pin.errors %}
+                <div class="alert alert-error">
+                    {{ form.pin.errors }}
+                </div>
+            {% endif %}
         </div>
         
         <button type="submit" class="btn btn-danger">Withdraw Funds</button>

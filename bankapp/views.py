@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
+from django.db.models import Sum
+from datetime import datetime, timedelta
 import csv
 from .models import Account, Transaction
 from .forms import LoginForm, DepositForm, WithdrawForm, RegistrationForm
@@ -84,6 +86,45 @@ def dashboard_view(request):
     }
     return render(request, 'dashboard.html', context)
 
+def monthly_dashboard_view(request):
+    acc_number = request.session.get('acc_number')
+    if not acc_number:
+        return redirect('login')
+    acc = get_object_or_404(Account, acc_number=acc_number)
+    
+    # Get the current month and year
+    today = datetime.now()
+    current_month = today.month
+    current_year = today.year
+    
+    # Filter transactions for the current month
+    monthly_transactions = acc.transactions.filter(
+        timestamp__year=current_year,
+        timestamp__month=current_month
+    ).order_by('-timestamp')
+    
+    # Calculate totals for the month
+    total_deposits = monthly_transactions.filter(action="Deposit").aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+    
+    total_withdrawals = monthly_transactions.filter(action="Withdraw").aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+    
+    net_change = total_deposits - total_withdrawals
+    
+    context = {
+        'account': acc,
+        'transactions': monthly_transactions,
+        'total_deposits': total_deposits,
+        'total_withdrawals': total_withdrawals,
+        'net_change': net_change,
+        'current_month': today.strftime("%B %Y"),
+        'is_home_page': False
+    }
+    return render(request, 'monthly_dashboard.html', context)
+
 def deposit_view(request):
     acc_number = request.session.get('acc_number')
     if not acc_number:
@@ -123,7 +164,12 @@ def withdraw_view(request):
         form = WithdrawForm(request.POST)
         if form.is_valid():
             amount = form.cleaned_data['amount']
-            if 0 < amount <= acc.balance:
+            pin = form.cleaned_data['pin']
+            
+            # Verify PIN before processing withdrawal
+            if pin != acc.pin:
+                form.add_error('pin', "Invalid PIN!")
+            elif 0 < amount <= acc.balance:
                 acc.balance -= amount
                 acc.save()
                 Transaction.objects.create(account=acc, action="Withdraw", amount=amount)
@@ -133,8 +179,10 @@ def withdraw_view(request):
                     'is_home_page': False
                 }
                 return render(request, 'withdraw_success.html', context)
+            elif amount > acc.balance:
+                form.add_error('amount', "Insufficient balance!")
             else:
-                form.add_error('amount', "Insufficient balance or invalid amount!")
+                form.add_error('amount', "Invalid amount!")
     else:
         form = WithdrawForm()
     context = {
